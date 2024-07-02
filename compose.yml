@@ -8,22 +8,22 @@ services:
     container_name: "subscribers"
     build: .
     volumes:
-      - ./subscribers:/usr/src/app
-    depends_on:
-      - redis
+      - ./subscribers:/app
+    entrypoint: ["python3", "subscriber.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    command: ["python3", "subscriber.py"]
+    depends_on:
+      - redis
   main:
     container_name: "main"
     build: .
     volumes:
-      - ./main:/usr/src/app
-    depends_on:
-      - redis
-      - subscriber
+      - ./main:/app
+    entrypoint: ["python3", "processing.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    command: ["python3", "processing.py"]
+    depends_on:
+      - redis
+      - subscriber

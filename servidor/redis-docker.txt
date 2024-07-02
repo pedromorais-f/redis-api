@@ -1,7 +1,0 @@
-criar rede docker: docker network create my-network
-
-docker em rede: "my-network": docker run -d --name redis --network my-network redis
-
-subscriber: docker run -it --name subnet --network my-network subscriber
-
-publisher: docker run -it --name pubnet --network my-network publisher
