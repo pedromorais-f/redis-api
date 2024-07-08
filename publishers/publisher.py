@@ -6,6 +6,10 @@ channel = "MNIST IMAGES"
 
 while True:
     image_file = input("Image:")
-    message = cv2.imread(f"publishers/inputs/5.jpg")
+
+    if image_file == "exit":
+        break
+    
+    message = cv2.imread(f"publishers/inputs/{image_file}")
     message = cv2.imencode('.jpg', message)[1].tobytes()
     redis_client.publish(channel, message)
