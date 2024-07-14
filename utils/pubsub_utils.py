@@ -23,7 +23,7 @@ def preprocess_image(image):
     return torch.tensor(image).unsqueeze(0).unsqueeze(0)
 
 def load_model(model):
-    model.load_state_dict(torch.load("main/model/model.pth", map_location=torch.device("cpu")))
+    model.load_state_dict(torch.load("model/model.pth", map_location=torch.device("cpu")))
     model.eval()
 
     return model

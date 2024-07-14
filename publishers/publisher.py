@@ -1,6 +1,5 @@
 import redis
 import cv2
-import os
 import time
 
 redis_client = redis.Redis(host="localhost",port=6379)

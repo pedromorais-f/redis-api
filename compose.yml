@@ -6,8 +6,8 @@ services:
       - "6379:6379"
   subscriber:
     container_name: "subscribers"
-    image: pmoraisf/redis-api:1.0
-    entrypoint: ["python3", "subscribers/subscriber.py"]
+    image: pmoraisf/redis-api:subscribers
+    entrypoint: ["python3", "subscriber.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -15,8 +15,8 @@ services:
       - redis
   main:
     container_name: "main"
-    image: pmoraisf/redis-api:1.0
-    entrypoint: ["python3", "main/processing.py"]
+    image: pmoraisf/redis-api:main
+    entrypoint: ["python3", "processing.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379

@@ -1,12 +1,13 @@
 import redis
 import cv2
 import numpy as np
+import os
 from utils.pubsub_utils import get_module_logger, preprocess_image, model_prediction, load_model
 from mnist import MnistModel
 
 
 def main():
-    redis_client = redis.Redis(host="redis",port=6379, db=0)
+    redis_client = redis.Redis(host=os.getenv("REDIS_HOST"),port=os.getenv("REDIS_PORT"))
     logger = get_module_logger()
 
     channels = ["MNIST IMAGES", "Prediction"]
