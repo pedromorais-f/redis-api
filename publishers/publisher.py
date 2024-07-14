@@ -1,15 +1,18 @@
 import redis
 import cv2
+import os
+import time
 
 redis_client = redis.Redis(host="localhost",port=6379)
 channel = "MNIST IMAGES"
 
-while True:
-    image_file = input("Image:")
+image_path = "publishers/inputs"
 
-    if image_file == "exit":
-        break
-    
-    message = cv2.imread(f"publishers/inputs/{image_file}")
+while True:
+    image_input = input("Image:")
+
+    message = cv2.imread(f"{image_path}/{image_input}")
     message = cv2.imencode('.jpg', message)[1].tobytes()
+    time.sleep(2)
     redis_client.publish(channel, message)
+    

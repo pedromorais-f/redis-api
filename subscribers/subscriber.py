@@ -12,7 +12,6 @@ logger = get_module_logger()
 logger.info(f"Subscribed in {channel} Channel")
 
 for message in pubsub.listen():
-    logger.info(message)
     if message['type'] == 'message':
-        str = message['data']
-        logger.info(str)
+        prediction = message['data']
+        logger.info(f"{prediction}\n")
