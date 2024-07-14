@@ -2,3 +2,4 @@ venv
 .dockerignore
 .env
 __pycache__
+Dockerfile
