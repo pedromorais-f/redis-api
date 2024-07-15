@@ -1,6 +1,5 @@
 import redis
 import cv2
-import time
 import json
 import base64
 import os
@@ -21,6 +20,5 @@ for image_input in images_names_list:
     image = base64.b64encode(image).decode('utf-8')
 
     message = json.dumps({"image_name": image_input, "image": image, "user": user, "Prediction": None})
-    time.sleep(1)
     redis_client.publish(channel, message)
     
