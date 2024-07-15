@@ -1,5 +1,5 @@
 venv
-.dockerignore
 .env
 __pycache__
 Dockerfile
+publishercopy.py
