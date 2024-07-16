@@ -1,6 +1,6 @@
 # Redis PUB/SUB Application using MNIST Dataset
 
-Docker Hub Repository to asyncronous and syncronous images: <a href="https://hub.docker.com/repository/docker/pmoraisf/redis-api/general" >Docker Repository<a/>
+Docker Hub Repository to syncronous images: <a href="https://hub.docker.com/repository/docker/pmoraisf/redis-api/general" >Docker Repository<a/>
 
 ## ABOUT Images
 
