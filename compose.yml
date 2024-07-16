@@ -10,16 +10,16 @@ services:
     entrypoint: ["python3", "subscriber.py"]
     environment:
       - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
     depends_on:
       - redis
   main:
     container_name: "main"
     image: pmoraisf/redis-api:main
-    entrypoint: ["python3", "processing.py"]
+    entrypoint: ["python3", "server.py"]
     environment:
       - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
     depends_on:
       - redis
       - subscriber
