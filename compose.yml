@@ -7,7 +7,7 @@ services:
   subscriber:
     container_name: "subscribers"
     image: pmoraisf/redis-api:subscribers
-    entrypoint: ["python3", "subscriber.py"]
+    entrypoint: ["python3", "subscriber-async.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=
@@ -16,7 +16,7 @@ services:
   main:
     container_name: "main"
     image: pmoraisf/redis-api:main
-    entrypoint: ["python3", "server.py"]
+    entrypoint: ["python3", "server-async.py"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=

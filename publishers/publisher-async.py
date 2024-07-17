@@ -1,13 +1,16 @@
-import redis
+import redis.asyncio as redis
 import cv2
 import json
 import base64
 import os
+import asyncio
 
 
-def main():
-    redis_client = redis.Redis(host=os.getenv("REDIS_HOST"),port=6379, password=os.getenv("REDIS_PASSWORD"))
-    channel = "MNIST IMAGES"
+async def main():
+    redis_host = os.getenv("REDIS_HOST")
+    password = os.getenv("REDIS_PASSWORD")    
+    redis_client = await redis.from_url(f"redis://{redis_host}:6379", password=password)
+    channel = "MNIST-IMAGES"
 
     user = os.getenv("USER")
 
@@ -15,16 +18,17 @@ def main():
     images_names_list = os.listdir(image_path)
 
     print(images_names_list)
+    
     while True:
-        image_input = input("Write IMAGE_NAME:")
+        image_input = input("IMAGE NAME:")
 
         image = cv2.imread(f"{image_path}/{image_input}")
         image = cv2.imencode('.jpg', image)[1].tobytes()
         image = base64.b64encode(image).decode('utf-8')
 
         message = json.dumps({"image_name": image_input, "image": image, "user": user, "Prediction": None})
-        redis_client.publish(channel, message)
+        await redis_client.publish(channel, message)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
     

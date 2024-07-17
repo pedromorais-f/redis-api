@@ -16,7 +16,7 @@ def get_module_logger():
     return logger
 
 
-def preprocess_image(image):
+async def preprocess_image(image):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     image = cv2.resize(image, (28, 28))
     image = image.astype(np.float32) / 255.0
@@ -28,7 +28,7 @@ def load_model(model):
 
     return model
 
-def model_prediction(image_processed, model_load):
+async def model_prediction(image_processed, model_load):
     output = model_load(image_processed)
     _, predicted = torch.max(output.data, 1)
     
