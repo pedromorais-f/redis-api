@@ -3,6 +3,10 @@ import os
 import asyncio
 from utils.pubsub_utils_async import get_module_logger
 
+async def show_message(message, logger):
+    prediction = message["data"]
+    logger.info(f"{prediction}\n")
+
 
 async def main():
     redis_host = os.getenv("REDIS_HOST")
@@ -20,8 +24,7 @@ async def main():
     while True:
         message = await pubsub.get_message(ignore_subscribe_messages=True)
         if message is not None:
-            prediction = message["data"]
-            logger.info(f"{prediction}\n")    
+            asyncio.create_task(show_message(message, logger))
 
 
 if __name__ == "__main__":

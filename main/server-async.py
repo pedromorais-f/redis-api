@@ -8,26 +8,28 @@ import asyncio
 from utils.pubsub_utils_async import get_module_logger, preprocess_image, model_prediction, load_model
 from mnist import MnistModel
 
+async def process_message(message, logger, model_loaded, redis_client, channels):
+    data = json.loads(message['data'])
+
+    data["image"] = base64.b64decode(data["image"])
+
+    data["image"] = cv2.imdecode(np.frombuffer(data["image"], np.uint8), cv2.IMREAD_COLOR)
+    logger.info("Image Decoded!")
+
+    data["image"] = await preprocess_image(data["image"])
+    logger.info("Image Processed!")
+    logger.info("Generating the result...")
+
+    data["Prediction"] = await model_prediction(data["image"], model_loaded)    
+            
+    await redis_client.publish(channels[1], f"The Prediction of the image {data['image_name']} that was sent by {data['user']} is {data['Prediction']}")
+    logger.info("Prediction published\n")
 
 async def listen(channel: redis.client.PubSub, model_loaded : MnistModel, logger, redis_client, channels):
     while True:
         message = await channel.get_message(ignore_subscribe_messages=True)
         if message is not None:
-            data = json.loads(message['data'])
-
-            data["image"] = base64.b64decode(data["image"])
-
-            data["image"] = cv2.imdecode(np.frombuffer(data["image"], np.uint8), cv2.IMREAD_COLOR)
-            logger.info("Image Decoded!")
-
-            data["image"] = await preprocess_image(data["image"])
-            logger.info("Image Processed!")
-            logger.info("Generating the result...")
-
-            data["Prediction"] = await model_prediction(data["image"], model_loaded)    
-            
-            await redis_client.publish(channels[1], f"The Prediction of the image {data['image_name']} that was sent by {data['user']} is {data['Prediction']}")
-            logger.info("Prediction published\n")
+            asyncio.create_task(process_message(message, logger, model_loaded, redis_client, channels))
 
 async def main():
     redis_host = os.getenv("REDIS_HOST")
